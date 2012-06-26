@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<name>
+		<lang name="default">Livestreet Picture Albums</lang>
+	</name>
+	<author>
+		<lang name="default">Sebastian Prelesniy (sebastian.prelesniy@gmail.com)</lang>
+	</author>
+	<homepage>http://lsmafia.com/prezentaciya-plagina-livestreet-picture-albums.html</homepage>
+	<version>0.3.1</version>
+	<requires>
+		<livestreet>0.5.1</livestreet>
+		<plugins>
+		</plugins>
+	</requires>
+	<description>
+		<lang name="english">Collective and personal private photo albums</lang>
+		<lang name="russian">Коллективные и персональные профильные фотоальбомы</lang>
+	</description>
+</plugin>

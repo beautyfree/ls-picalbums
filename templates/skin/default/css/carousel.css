@@ -1,0 +1,92 @@
+
+.image_carousel {
+    padding: 15px 0 15px 40px;
+    position: relative;
+}
+
+.image_carousel img {
+    border: 1px solid #ccc;
+    background-color: white;
+    padding: 9px;
+    margin: 7px;
+    display: block;
+    float: left;
+    width: 130px;
+    height: 94px;
+}
+
+.image_carousel .carimage {
+    padding: 0px;
+    margin: 0px;
+    display: block;
+    float: left;
+}
+
+.image_carousel a.prev, .image_carousel a.next {
+    background: url(../images/miscellaneous_sprite.png) no-repeat transparent;
+    width: 45px;
+    height: 50px;
+    display: block;
+    position: absolute;
+    top: 85px;
+}
+
+.image_carousel a.prev {
+    left: -22px;
+    background-position: 0 0;
+}
+
+.image_carousel a.prev:hover {
+    background-position: 0 -50px;
+}
+
+.image_carousel a.prev.disabled {
+    background-position: 0 -100px !important;
+}
+
+.image_carousel a.next {
+    right: -22px;
+    background-position: -50px 0;
+}
+
+.image_carousel a.next:hover {
+    background-position: -50px -50px;
+}
+
+.image_carousel a.next.disabled {
+    background-position: -50px -100px !important;
+}
+
+.image_carousel a.prev.disabled, a.next.disabled {
+    cursor: default;
+}
+
+.image_carousel a.prev span, a.next span {
+    display: none;
+}
+
+.image_carousel .pagination {
+    text-align: center;
+}
+
+.image_carousel .pagination a {
+    background: url(../images/miscellaneous_sprite.png) 0 -300px no-repeat transparent;
+    width: 15px;
+    height: 15px;
+    margin: 0 5px 0 0;
+    display: inline-block;
+}
+
+.image_carousel .pagination a.selected {
+    background-position: -25px -300px;
+    cursor: default;
+}
+
+.image_carousel .pagination a span {
+    display: none;
+}
+
+.image_carousel .clearfix {
+    float: none;
+    clear: both;
+}
