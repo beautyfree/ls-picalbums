@@ -285,6 +285,8 @@ return array(
     'picalbums_ajaxuploader_cancel' => "Отмена",
     'picalbums_ajaxuploader_failed' => "Неудача",
 
+    'picalbums_ajaxuploader_button_title' => "Загрузить фото",
+
     'picalbums_best_pictures_slider' => "Слайдер лучших фотографий",
     'picalbums_tags' => 'Теги',
     'picalbums_albums_tags' => 'Альбомы с тегом',
@@ -298,6 +300,7 @@ return array(
     'picalbums_added_favourite' => 'которые вам понравились',
 
     'picalbums_select_album_for_copy' => 'Выберите альбом для копирования',
+    'picalbums_create_album_for_copy' => 'Создание альбома для копирования',
     'picalbums_do_copy' => 'Скопировать себе в профиль',
     'picalbums_do_copy_small' => 'Скопировать себе',
     'picalbums_do_copy_ok' => 'Фотография успешнос скопирована в альбом',
@@ -307,6 +310,12 @@ return array(
 
     'picalbums_move_picture_in_anothe_place' => 'Перетащите фотографию в нужное место',
     'picalbums_moderation_info' => 'Если ниже выбрать пункт "Нуждается в модерации", то фотографии  добавленные в этот альбом другими пользователями, будут попадать не сразу, а через премодерацию',
+
+    'picalbums_copy_dublicate' => 'Вы уже копировалии ранее фотографию в данынй альбом',
+
+    'picalbums_stream_in_album' => 'в альбоме',
+    'picalbums_stream_comment_added_man' => 'прокомментировал фотографию',
+    'picalbums_stream_comment_added_woman' => 'прокомментировала фотографию'
 );
 
 ?>

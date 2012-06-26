@@ -1,13 +1,8 @@
 {include file='header.tpl' menu='settings' showWhiteBack=true}
-
-<link rel='stylesheet' type='text/css' href='{$sTemplateWebPathPicalbumsPlugin}/css/picalbums.css' />	
-
 <h2>{$aLang.picalbums_settings_albums}</h2>
 
-<div class="picalbums_setting" >		
-
+<div class="picalbums_setting" >
 	<form action="" method="POST" id="form_picalbums_setting" enctype="multipart/form-data">
-
 		{if $bEnabledUsedAjax}
 			<div>
 				<p>
@@ -106,12 +101,10 @@
             </ul>
 		{/if}
 
-        <script type="text/javascript" src="{$sTemplateWebPathPicalbumsPlugin}/js/picalbums-sort.js"></script>
-
 		<form id="new_category_save" method="POST" enctype="multipart/form-data">
 			<p>
 				<div>
-					<label for="">{$aLang.picalbums_category_name_title}</label><br />
+					<label>{$aLang.picalbums_category_name_title}</label><br />
 					<input type="text" id="categoty_text_name" name="categoty_text_name" /><br><br>
 				</div>
 				

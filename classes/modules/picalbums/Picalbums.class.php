@@ -40,9 +40,80 @@ class PluginPicalbums_ModulePicalbums extends Module {
 		return $data;		
 	}
 
-    public function GetUserCollectiveAlbumOwner($iVirtualUserId) {
+    public function GetUserCollectiveAlbumOwner($iVirtualUserId, $iPictureId) {
 		return $this->oMapper->GetUserCollectiveAlbumOwner($iVirtualUserId);
 	}
+    
+    public function GetNoteArrayByPictureId($iPictureOwnerUserId, $iPictureId, $oUserCurrent) {
+        $iUserCurrentId = null;
+        $bIsAdmin = false;
+        if($oUserCurrent) {
+            $iUserCurrentId = $oUserCurrent->getId();
+            $bIsAdmin = $oUserCurrent->isAdministrator();
+        }
+
+        // Администратор и автор картинки видит все пометки
+        if(($bIsAdmin) ||($iPictureOwnerUserId == $iUserCurrentId))
+            $aNotes = $this->PluginPicalbums_Note_GetNotesByPictureId ( $iPictureId );
+        else {
+            $aNotes = $this->PluginPicalbums_Note_GetConfirmedNotesByPictureId ( $iPictureId, $iUserCurrentId );
+        }
+
+        $aResult=array();
+        if($aNotes)
+            foreach($aNotes as $sNoteText) {
+                $sNoteTextUser = $this->User_GetUserById($sNoteText->getUserMarkId());
+                $sLink = $sNoteText->getLink();
+                $sAuthorMark = '';
+
+                if($sNoteTextUser) {
+                    $sLink = $sNoteTextUser->getUserWebPath();
+                    $sAuthorMark = $sNoteTextUser->getLogin();
+                }
+
+                $sNoteTextAuthor = $this->User_GetUserById($sNoteText->getUserId());
+                if($sNoteTextAuthor)
+                    $sNoteTextAuthor = $sNoteTextAuthor->getLogin();
+                else
+                    $sNoteTextAuthor = '';
+
+                $sAvatar = "";
+                if($sNoteText->getUserMarkId()) {
+                    $oUser = $this->User_GetUserById($sNoteText->getUserMarkId());
+                    if($oUser)
+                        $sAvatar = "<img src='" . $oUser->getProfileAvatarPath(24) . "' /><br/>";
+                }
+                $bCanEdit = 0;
+                $bCanDelete = 0;
+                if(($iUserCurrentId == $sNoteText->getUserId()) ||  ($iUserCurrentId == $sNoteText->getUserMarkId()) ||
+                   ($iUserCurrentId == $iPictureOwnerUserId)) {
+                   $bCanDelete = 1;
+                    if(!Config::Get ( 'plugin.picalbums.notes_mark_confirm' ))
+                        $bCanEdit = 1;
+                    else {
+                       if(($sNoteText->getIsConfirm() == 0) || ($sNoteText->getIsConfirm() == '0'))
+                            $bCanEdit = 1;
+                    }
+                }
+
+                $aResult[]=array(
+                        'ID' => $sNoteText->getId(),
+                        'LEFT' => $sNoteText->getLeft(),
+                        'WIDTH' => $sNoteText->getWidth(),
+                        'TOP' => $sNoteText->getTop(),
+                        'HEIGHT' => $sNoteText->getHeight(),
+                        'DATE' => $sNoteText->getDateAdd(),
+                        'NOTE' => $sAvatar . $sNoteText->getNote(),
+                        'LINK' => $sLink,
+                        'AUTHOR' => $sNoteTextAuthor,
+                        'AUTHORMARK' => $sAuthorMark,
+                        'CANEDIT' => $bCanEdit,
+                        'CANDELETE' => $bCanDelete,
+                        'ISCONFIRM' => $sNoteText->getIsConfirm(),
+                );
+            }
+        return $aResult;
+    }
 	
 }
 ?>

@@ -1,31 +1,317 @@
-.qq-uploader { position:relative; width: 100%;}
+.qq-uploader {
+    position: relative;
+    width: 100%;
+}
 
 .qq-upload-button {
-    display:block; /* or inline-block */
-    width: 105px; padding: 7px 0; text-align:center;    
-    background:#799DC1; border-bottom:1px solid #ddd;color:#fff;
+    display: block; /* or inline-block */
+    width: 105px;
+    padding: 7px 0;
+    text-align: center;
+    background: #799DC1;
+    border-bottom: 1px solid #ddd;
+    color: #fff;
 }
-.qq-upload-button-hover {background:#4C5186;}
-.qq-upload-button-focus {outline:1px dotted black;}
+
+.qq-upload-button-hover {
+    background: #4C5186;
+}
+
+.qq-upload-button-focus {
+    outline: 1px dotted black;
+}
 
 .qq-upload-drop-area {
-    position:absolute; top:0; left:0; width:100%; height:100%; min-height: 70px; z-index:2;
-    background:#799DC1; color: #fff; text-align:center; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 70px;
+    z-index: 2;
+    background: #799DC1;
+    color: #fff;
+    text-align: center;
 }
-.qq-upload-drop-area span {
-    display:block; position:absolute; top: 50%; width:100%; margin-top:-8px; font-size:16px;
-}
-.qq-upload-drop-area-active {background: #4C5186; color: #fff; }
 
-.qq-upload-list {list-style:none; margin:10px; margin-left:30px; padding:0; }
-.qq-upload-list li { margin:0; padding:0; line-height:15px; font-size:12px;}
-.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {
+.qq-upload-drop-area span {
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -8px;
+    font-size: 16px;
+}
+
+.qq-upload-drop-area-active {
+    background: #4C5186;
+    color: #fff;
+}
+
+.qq-upload-list {
+    list-style: none;
+    margin: 10px;
+    margin-left: 30px;
+    padding: 0;
+}
+
+.qq-upload-list li {
+    margin: 0;
+    padding: 0;
+    line-height: 15px;
+    font-size: 12px;
+}
+
+.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text,  #log li button.cancel {
     margin-right: 7px;
 }
 
-.qq-upload-file { color: #4BB23B; }
-.qq-upload-spinner {display:inline-block; background: url(../images/loading.gif); width:15px; height:15px; vertical-align:text-bottom;}
-.qq-upload-size,.qq-upload-cancel {font-size:11px;}
+.qq-upload-file {
+    color: #4BB23B;
+}
 
-.qq-upload-failed-text {display:none;}
-.qq-upload-fail .qq-upload-failed-text {display:inline;}
+.qq-upload-spinner {
+    display: inline-block;
+    background: url(../images/loading.gif);
+    width: 15px;
+    height: 15px;
+    vertical-align: text-bottom;
+}
+
+.qq-upload-size, .qq-upload-cancel {
+    font-size: 11px;
+}
+
+.qq-upload-failed-text {
+    display: none;
+}
+
+.qq-upload-fail .qq-upload-failed-text {
+    display: inline;
+}
+
+/* jQueryUI classes */
+.jq-uploader {
+    position: relative;
+    width: 100%;
+}
+
+/*
+* jQuery File Upload UI Plugin CSS 6.3
+* https://github.com/blueimp/jQuery-File-Upload
+*
+* Copyright 2010, Sebastian Tschan
+* https://blueimp.net
+*
+* Licensed under the MIT license:
+* http://www.opensource.org/licenses/MIT
+*/
+.jq-upload-button {
+    position: relative;
+    overflow: hidden;
+    float: left;
+    margin-right: 5px;
+}
+
+.jq-upload-button input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    border: solid transparent;
+    border-width: 0 0 78px 200px;
+    opacity: 0;
+    filter: alpha(opacity = 0);
+    -moz-transform: translate(-300, 0) scale(4);
+    direction: ltr;
+    cursor: pointer;
+}
+
+.jq-upload-list {
+    clear: both;
+    margin-top: 0px;
+    padding: 15px 0 0;
+    list-style: none;
+}
+
+.jq-upload-list li, #log li {
+    margin-top: 5px;
+    font-size: 12px;
+    background-color: #F9F9F9;
+    border: 2px solid #DDDDDD;
+    border-radius: 8px 8px 8px 8px;
+    font: 11px Verdana,Geneva,sans-serif;
+    list-style-position: inside;
+    margin-top: 5px;
+    padding: 10px;
+    position: relative;
+    width: 500px;
+    height: 50px;
+}
+
+.jq-upload-file, .jq-upload-progress, .jq-upload-size, .jq-upload-cancel, .jq-upload-failed-text {
+    margin-right: 7px;
+}
+
+.jq-upload-file {
+}
+
+.jq-upload-progress {
+    height: 1.3em;
+}
+
+.jq-upload-size, .qq-upload-cancel {
+    font-size: 11px;
+}
+
+.jq-upload-size {
+    margin-right: 0px;
+}
+
+.jq-upload-failed-text {
+    display: none;
+}
+
+.jq-upload-fail .qq-upload-failed-text {
+    display: inline;
+}
+
+.jq-upload-list .jq-upload-progress, #log li .progressbar  {
+    width: 77%;
+    border-radius: 4px 4px 4px 4px;
+    height: 18px;
+    margin-top: 6px;
+    margin-bottom: 18px;
+
+    background-color: #F7F7F7;
+    background-image: -moz-linear-gradient(center top , #F5F5F5, #F9F9F9);
+    background-repeat: repeat-x;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+
+    border: none;
+    float: left;
+}
+
+.jq-upload-list .jq-upload-progress .ui-progressbar-value, #log li .progress {
+    background-color: #149BDF;
+    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-size: 40px 40px;
+    -moz-animation: 2s linear 0s normal none infinite progress-bar-stripes;
+    -moz-box-sizing: border-box;
+    -moz-transition: width 0.6s ease 0s;
+    background-repeat: repeat-x;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
+    text-align: center;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    height: 18px;
+    border-radius: 4px 4px 4px 4px;
+
+    border: none;
+    width: 0px;
+}
+
+.jq-upload-list .jq-upload-success .jq-upload-progress .ui-progressbar-value, #log li.success .progress {
+    background-color: #62C462;
+    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-repeat: repeat-x;
+    width: 0px;
+}
+
+.jq-upload-cancel, #log li button.cancel {
+    background-color: #FAA732;
+    background-image: -moz-linear-gradient(center top , #FBB450, #F89406);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    margin-bottom: 0;
+    padding: 4px 10px;
+    text-align: center;
+    vertical-align: middle;
+
+    text-decoration: none;
+    float: right;
+}
+
+.jq-upload-cancel:hover, .jq-upload-cancel:active, .jq-upload-cancel.active, .jq-upload-cancel.disabled, .jq-upload-cancel[disabled],
+#log li button.cancel:hover, #log li button.cancel:active, #log li button.cancel.active, #log li button.cancel.disabled, #log li button.cancel[disabled] {
+    background-color: #F89406;
+    -moz-transition: background-position 0.1s linear 0s;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+
+.jq-upload-cancel i, #log li button.cancel i{
+    background-position: -216px -96px;
+    background-image: url("../images/booticon.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 14px;
+    line-height: 14px;
+    vertical-align: text-top;
+    width: 14px;
+
+    margin-right: 5px;
+}
+
+.ui-button-text {
+    background-color: #0074CC;
+    background-image: -moz-linear-gradient(center top , #0088CC, #0055CC);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 18px;
+    padding: 4px 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.ui-button-text:hover, .ui-button-text:active, .ui-button-text.active, .ui-button-text.disabled, .ui-button-text[disabled] {
+    background-color: #0055CC;
+    -moz-transition: background-position 0.1s linear 0s;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+
+.ui-button-text i {
+    background-position: -144px -24px;
+    background-image: url("../images/booticon.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 14px;
+    line-height: 14px;
+    vertical-align: text-top;
+    width: 14px;
+    margin-right: 5px;
+}

@@ -73,6 +73,7 @@
 	float:left;
 	margin:0 1px;
 	list-style:none;
+    padding: 0px;
 }
 
 #slides .pagination li a {

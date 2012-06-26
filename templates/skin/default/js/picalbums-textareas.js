@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    $(".picalbums_comment-counter").append(ls.lang.get('picalbums_text_characters_start') + "<strong>" + (picalbumsConfig["text_form_max_characters"] - $('#album_description_text').val().length) + "</strong>" + ls.lang.get('picalbums_text_characters_end'));
+    if($('#album_description_text').length)
+        $(".picalbums_comment-counter").append(ls.lang.get('picalbums_text_characters_start') + "<strong>" + (picalbumsConfig["text_form_max_characters"] - $('#album_description_text').val().length) + "</strong>" + ls.lang.get('picalbums_text_characters_end'));
 
     $('#album_description_text').bind('textchange', function () {
         if ($(this).val().length > picalbumsConfig["text_form_max_characters"]) $(this).val($(this).val().substr(0, picalbumsConfig["text_form_max_characters"]));

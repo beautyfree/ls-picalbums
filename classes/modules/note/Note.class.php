@@ -29,48 +29,50 @@ class PluginPicalbums_ModuleNote extends Module {
 	}
 	
 	public function GetConfirmedNotesByPictureId($iPictureId, $iUserId) {
-		$notes = $this->GetNotesByPictureId($iPictureId);
+		$aNotes = $this->GetNotesByPictureId($iPictureId);
 		$aReturn = array ();
-		foreach($notes as $note) {
-			if(($note->getIsConfirm() == 1) || ($note->getIsConfirm() == '1'))
-				$aReturn[] = $note;
-			else if($note->getUserId() == $iUserId)
-				$aReturn[] = $note;
-			else if($note->getUserMarkId() == $iUserId)
-				$aReturn[] = $note;
-		}
+        if($aNotes and is_array($aNotes)) {
+            foreach($aNotes as $oNote) {
+                if(($oNote->getIsConfirm() == 1) || ($oNote->getIsConfirm() == '1'))
+                    $aReturn[] = $oNote;
+                else if($oNote->getUserId() == $iUserId)
+                    $aReturn[] = $oNote;
+                else if($oNote->getUserMarkId() == $iUserId)
+                    $aReturn[] = $oNote;
+            }
+        }
 		return $aReturn;
 	}
 	
 	public function isHasMarkWithNonConfirm($iPictureId, $iUserId) {
-		$notes = $this->GetNotesByPictureId($iPictureId);
+		$aNotes = $this->GetNotesByPictureId($iPictureId);
 		$aReturn = 0;
-		if($notes)
-			foreach($notes as $note) {
-				if((($note->getIsConfirm() == 0) || ($note->getIsConfirm() == '0')) && ($note->getUserMarkId() == $iUserId))
+		if($aNotes)
+			foreach($aNotes as $oNote) {
+				if((($oNote->getIsConfirm() == 0) || ($oNote->getIsConfirm() == '0')) && ($oNote->getUserMarkId() == $iUserId))
 					$aReturn++;
 			}
 		return $aReturn;
 	}
 	
 	public function MarkCountByOneUser($iPictureId, $iUserId) {
-		$notes = $this->GetNotesByPictureId($iPictureId);
+		$aNotes = $this->GetNotesByPictureId($iPictureId);
 		$aReturn = 0;
-		if($notes)
-			foreach($notes as $note) {
-				if($note->getUserMarkId() == $iUserId)
+		if($aNotes)
+			foreach($aNotes as $oNote) {
+				if($oNote->getUserMarkId() == $iUserId)
 					$aReturn++;
 			}
 		return $aReturn;
 	}
 	
 	public function getUsersWhoMarkedAnotheUserByPicture($iPictureId, $iUserId) {
-		$notes = $this->GetNotesByPictureId($iPictureId);
+		$aNotes = $this->GetNotesByPictureId($iPictureId);
 		$aReturn = array ();
-		if($notes)
-			foreach($notes as $note) {
-				if(($note->getUserMarkId() == $iUserId) && ($note->getIsConfirm() == 0))
-					$aReturn[] = $note->getUserId();
+		if($aNotes)
+			foreach($aNotes as $oNote) {
+				if(($oNote->getUserMarkId() == $iUserId) && ($oNote->getIsConfirm() == 0))
+					$aReturn[] = $oNote->getUserId();
 			}
 			
 		return array_unique($aReturn);

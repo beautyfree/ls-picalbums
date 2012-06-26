@@ -1,11 +1,11 @@
 {include file='header.tpl' menu="mainalbums" showWhiteBack=false}	
 
-<h1>{$aLang.picalbums_pictures_edit}</h1>
+<h1 class="albums-page-title">{$aLang.picalbums_pictures_edit}</h1>
 
 {assign var="iPictureCnt" value=0}
 
 {if $aPictures}		
-	<ul id="pictures_listing">
+	<ul id="edit_pictures_listing">
 		{foreach from=$aPictures item=oPicture}
 			{assign var="isContinue" value=true}
 			{assign var="isShowCover" value=true}
@@ -38,12 +38,11 @@
 {if $iPictureCnt == 0}
 	{$aLang.picalbums_picturesedit_nophoto}
 {else}
-	<input 	class="right" type="submit" 
+	<input 	class="right albums-button"
+            type="submit"
 			name="submit_pictures"
 			value="{$aLang.picalbums_pictures_submit}" 
 			onclick="picalbums.editPictures({$oAlbum->getId()}, '{router page="$sMainAlbumsRouterName"}{$oAlbum->getURL()}/'); return false;" />
 {/if}
-
-<script type="text/javascript" src="{$sTemplateWebPathPicalbumsPlugin}/js/picalbums-sort.js"></script>
 
 {include file='footer.tpl'}

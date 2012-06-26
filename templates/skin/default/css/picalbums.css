@@ -2,7 +2,7 @@
 .photo-albums {
     margin: 0 0 15px;
     overflow: hidden;
-    padding: 6px 8px; /* padding: 1px 6px 1px 3px; */
+    padding: 6px 8px;
 }
 
 .photo-albums img.album {
@@ -327,21 +327,16 @@
 }
 
 ul.multiupload_tabs {
-    height: 25px;
-    line-height: 25px;
-    margin: 0 0 3px;
-    list-style: none;
+	height: 25px;
+	line-height: 25px;
+	margin: 0 0 3px;
+	list-style: none;
 }
-
-* html ul.multiupload_tabs {
-    margin-bottom: 0;
-}
-
+* html ul.multiupload_tabs {margin-bottom: 0;}
 ul.multiupload_tabs li {
-    float: left;
-    margin-right: 1px;
+	float: left;
+	margin-right: 1px;
 }
-
 ul.multiupload_tabs li a {
     background: none repeat scroll 0 0 #F4F4F4;
     border-color: #DDDDDD #DDDDDD #EFEFEF;
@@ -358,38 +353,22 @@ ul.multiupload_tabs li a {
     text-decoration: none;
 }
 
-* html ul.multiupload_tabs li a {
-    float: left
-}
-
-*+html ul.multiupload_tabs li a {
-    float: left
-}
-
 ul.multiupload_tabs li a:hover {
-    color: #333;
-    padding: 0 13px 5px;
-    background: #CCCCCC;
-    border-color: 1px solid #CCCCCC;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3) !important;
+	color: #333;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3) !important;
 }
+
+* html ul.multiupload_tabs li a {float: left}
+*+html ul.multiupload_tabs li a {float: left}
 
 ul.multiupload_tabs li.tab-current a {
-    background: -moz-linear-gradient(center top, #DFDFDF 0pt, #F3F3F3 100%) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(center top , #DFDFDF 0pt, #F3F3F3 100%) repeat scroll 0 0 transparent;
     border-color: #CACACA #B3B3B3 #9F9F9F;
-    border-radius: 4px 4px 0 0;
-    border-style: solid;
-    border-width: 1px;
     color: #333333;
-    font-size: 11px;
     padding: 0 13px 8px;
 }
 
 ul.multiupload_tabs li.tab-current a:hover {
-    color: #333;
-    padding: 0 13px 5px;
-    background: #CCCCCC;
-    border-color: 1px solid #CCCCCC;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3) !important;
 }
 
@@ -397,9 +376,8 @@ div.multiupload_tab01,
 div.multiupload_tab2,
 div.multiupload_tab3,
 div.multiupload_tab4 {
-    display: none;
+	display: none;
 }
-
 div.multiupload_tab_hiddenform,
 div.multiupload_tab00,
 div.multiupload_tab01,
@@ -410,10 +388,13 @@ div.multiupload_tab4 {
     background: none repeat scroll 0 0 #F4F4F4;
     border: 1px solid #CCCCCC;
     border-radius: 5px 5px 5px 5px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15) !important ;
     padding: 10px;
     position: relative;
-    min-height: 60px;
+}
+div.multiupload_tab_hiddenform {
+    height: 155px;
+    width: 500px;
 }
 
 #swfupload-control {
@@ -431,54 +412,10 @@ div.multiupload_tab4 {
     font-size: 0.9em;
 }
 
-#log {
-    margin: 0;
-    padding: 0;
-    width: 500px;
-}
-
-#log li {
-    list-style-position: inside;
-    background-color: #F5F5F5;
-    border: 2px solid #E5E5E5;
-    font: 11px Verdana, Geneva, sans-serif;
-    margin-top: 5px;
-    padding: 10px;
-    width: 400px;
-    position: relative;
-}
-
-#log li .progressbar {
-    height: 5px;
-    background-color: #E5E5E5;
-
-}
-
-#log li .progress {
-    background-color: #0099FF;
-    width: 0%;
-    height: 5px;
-}
-
-#log li p {
-    margin: 0;
-    line-height: 18px;
-}
-
-#log li.success {
-    border: 2px solid #339933;
-    background: #DAFAD8;
-    color: #333333;
-}
-
-#log li span.cancel {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 20px;
-    height: 20px;
-    background: url('../images/cancel.png') no-repeat;
-    cursor: pointer;
+#queuestatus {
+    margin: 0px;
+    padding: 0px;
+    display: none;
 }
 
 #muhiddenlink {
@@ -519,6 +456,10 @@ div.multiupload_tab4 {
 #share42 a {
     opacity: 0.5;
     vertical-align: bottom;
+    display:inline-block;
+    width:16px;
+    height:16px;
+    margin:0 7px 7px 0;
 }
 
 #share42:hover a {
@@ -822,6 +763,7 @@ div.multiupload_tab4 {
 }
 
 .button-del-blue:hover {
+    text-decoration: none;
     background: #70AAEA;
     background: -webkit-gradient(linear, left top, left bottom, from(#435F92), to(#70AAEA));
     background: -moz-linear-gradient(-90deg, #435F92, #70AAEA);
@@ -829,6 +771,7 @@ div.multiupload_tab4 {
 }
 
 .button-del-blue:active {
+    text-decoration: none;
     background: #435F92;
 }
 .notmoderedtext {
@@ -843,4 +786,8 @@ div.multiupload_tab4 {
 
 #currentuserpictures-dialog span {
     color: #FFFFFF;
+}
+
+#currentuserpictures-dialog {
+    padding-top: 15px;
 }

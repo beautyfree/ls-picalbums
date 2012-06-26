@@ -1,7 +1,7 @@
 {if !$isPjax}
 	{include file='header.tpl' menu='mainalbums' showWhiteBack=false}
 	{assign var="nextPage" value=$iPage+1}
-    <h1>{$aLang.picalbums_main_albums_listing}</h1>
+    <h1 class="albums-page-title">{$aLang.picalbums_main_albums_listing}</h1>
 {/if}
 
 {assign var=iShowCategoryCnt value=0}

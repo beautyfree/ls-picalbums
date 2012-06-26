@@ -1,3 +1,30 @@
+<script type="text/javascript">
+    function picturePrepare() {
+        $('#form_comment_text').markItUp(getMarkitupCommentSettings());
+
+        $('.original-imagegal').prettyPhoto({
+               social_tools:'',
+               show_title: false,
+               slideshow:false,
+               deeplinking: false,
+               overlay_gallery: false,
+        });
+
+        $('#heart_like').poshytip({
+             className: 'tip-yellow',
+             alignTo: 'cursor',
+             alignX: 'inner-left',
+             alignY: 'top',
+             offsetY: 5,
+             content: function(updateCallback) {
+                 return $('#picture-heart-preview').html();
+             }
+        });
+
+        $('#login_form').clone().appendTo('body').jqm({ trigger: '#picalbums_login_form_show' });
+    }
+</script>
+
 {if !$isPjax}
 	<script type="text/javascript" src="{cfg name='path.root.engine_lib'}/external/prettyPhoto/js/prettyPhoto.js"></script>
 	
@@ -20,66 +47,31 @@
                 {/foreach});
         {/if}
 
-        timeout = { timeout : 5000, };
 		$(document).ready(function() {
-			$('.navigation_next_pjax').pjax('#picture_listing_pjax',timeout);
-			$('.navigation_next_picture_link_pjax').pjax('#picture_listing_pjax',timeout);
-			$('.navigation_prev_pjax').pjax('#picture_listing_pjax', timeout);
+			$('.navigation_next_pjax').pjax('#picture_listing_pjax',{ timeout : 5000, });
+			$('.navigation_next_picture_link_pjax').pjax('#picture_listing_pjax',{ timeout : 5000, });
+			$('.navigation_prev_pjax').pjax('#picture_listing_pjax', { timeout : 5000, });
 
-			$('#form_comment_text').markItUp(getMarkitupCommentSettings());
-			share42('sharediv', '{$sTemplateWebPathPicalbumsPlugin}/images/',
-                                '{$sAlbumPath}{$oAlbum->getURL()}/{$oPicture->getURL()}/',
-                                '{$oPicture->getDescription()|escape:'html'}');
+            picturePrepare();
 
-			$('.original-imagegal').prettyPhoto({
-			         social_tools:'',
-			         show_title: false,
-			         slideshow:false,
-			         deeplinking: false,
-                     overlay_gallery: false,
-			});
-
-            $('#heart_like').poshytip({
-                className: 'tip-yellow',
-                alignTo: 'cursor',
-                alignX: 'inner-left',
-                alignY: 'top',
-                offsetY: 5,
-                content: function(updateCallback) {
-                    return $('#picture-heart-preview').html();
-                }
-            });
-
-            {if $bNoteActivate}
-                $('#loaded_image').imagesLoaded(function() {
-                    $('.jquery-note_picture').jQueryNotes({
-                        operator: aRouter[picalbumsConfig["picalbums_router_name"]]+'ajaxnote',
-                        pictureid: {$oPicture->getId()} });
+            $('#loaded_image').imagesLoaded(function() {
+                $('.jquery-note_picture').jQueryNotes({
+                    operator: aRouter[picalbumsConfig["picalbums_router_name"]]+'ajaxnote',
+                    pictureid: {$oPicture->getId()},
+                    picalbums_note_array_json: '{$sNoteArrayJson}'
                 });
-            {/if}
+            });
 		});
 	</script>
 {else}
 	<script type="text/javascript">
 		$('#loaded_image').imagesLoaded(function() {
-		      $('#form_comment_text').markItUp(getMarkitupCommentSettings());
-			  share42('sharediv', '{$sTemplateWebPathPicalbumsPlugin}/images/',
-                                  '{$sAlbumPath}{$oAlbum->getURL()}/{$oPicture->getURL()}/',
-                                   '{$oPicture->getDescription()|escape:'html'}');
+		      picturePrepare();
 
-			  $('.original-imagegal').prettyPhoto({
-					   social_tools:'',
-					   show_title: false,
-					   slideshow:false,
-					   deeplinking: false,
-					   overlay_gallery: false,
-			  });
-			  
-			  {if $bNoteActivate}
-					$('.jquery-note_picture').jQueryNotes({	
-						operator: aRouter[picalbumsConfig["picalbums_router_name"]]+'ajaxnote',
-						pictureid: {$oPicture->getId()} });
-			  {/if}
+              $('.jquery-note_picture').jQueryNotes({
+                  operator: aRouter[picalbumsConfig["picalbums_router_name"]]+'ajaxnote',
+                  pictureid: {$oPicture->getId()},
+                  picalbums_note_array_json: '{$sNoteArrayJson}' });
 		});
 	</script>
 {/if}

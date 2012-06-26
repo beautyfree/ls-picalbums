@@ -38,6 +38,6 @@ $(document).ready(
             });
         }
 
-        sort_elements("#pictures_listing", "pictures_setting_sort", 'ajaxsortpictures/');
+        sort_elements("#edit_pictures_listing", "pictures_setting_sort", 'ajaxsortpictures/');
         sort_elements("#category_listing_ul", "category_settings_setting_sort", 'ajaxsortcatset/');
 });

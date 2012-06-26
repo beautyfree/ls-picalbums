@@ -1,6 +1,6 @@
 {include file='header.tpl' menu='profile' showWhiteBack=false}
 
-<h1>{$aLang.picalbums_mark_user_photo} {$oUserProfile->getLogin()}</h1>
+<h1 class="albums-page-title">{$aLang.picalbums_mark_user_photo} {$oUserProfile->getLogin()}</h1>
 
 {if $aPictures}
 	{foreach from=$aPictures item=oPicture}

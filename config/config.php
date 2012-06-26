@@ -178,6 +178,7 @@ $config ['image'] ['watermark_back_color'] = '0,0,0';
 $config ['image'] ['watermark_back_alfa'] = '40';
 $config ['image'] ['watermark_min_width'] = '200';
 $config ['image'] ['watermark_min_height'] = '130';
+$config ['image'] ['jpg_quality'] = 100;
 
 /**
  * Настройки вывода блоков на главную сайта
@@ -285,7 +286,7 @@ $config ['heart_users_avatar_size'] = 24;
 // Осуществлять ли предзагрузку следующих фотографий
 $config ['preload_images_emable'] = true;
 // функционал копирования фотографий к себе в профиль
-$config ['functional_copy_picture_ebable'] = true;
+$config ['functional_copy_picture_enable'] = true;
 
 // Настройки для разработчика
 $config ['virtual_main_user_id'] = 2147483647;

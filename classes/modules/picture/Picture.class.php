@@ -369,6 +369,14 @@ class PluginPicalbums_ModulePicture extends Module {
 			
 		return true;
 	}
+
+    public function GetPicturesCountByPicPath($sPath){
+        return $this->oMapper->GetPicturesCountByPicPath($sPath);
+	}
+
+    public function GetPicturesCountByPicPathAndAlbumId($sPath, $iAlbumId){
+        return $this->oMapper->GetPicturesCountByPicPathAndAlbumId($sPath, $iAlbumId);
+	}
 	
 	// Добавление картинки
 	public function AddPicture($oPicture) {
@@ -382,8 +390,6 @@ class PluginPicalbums_ModulePicture extends Module {
 		}
 		return false;
 	}
-
-
 	
 	// Редактирвоание картинки
 	public function EditPicture($iPictureId, $sTitle, $oUrl) {
@@ -405,14 +411,19 @@ class PluginPicalbums_ModulePicture extends Module {
 		$this->Cache_Clean ( Zend_Cache::CLEANING_MODE_MATCHING_TAG, $arr );
 	}
 	
-	// Удаление альбома по его идентификатору
+	// Удаление изображения по его идентификатору
 	public function DeletePicture($iPictureId) {
-		
 		$oPicture = $this->GetPictureById($iPictureId);
+
+        if(Config::Get ('plugin.picalbums.functional_copy_picture_enable'))
+            $iPicCnt = $this->GetPicturesCountByPicPath($oPicture->getPicPath());
+        else
+            $iPicCnt = 1;
+
 		if ($this->oMapper->DeletePicture ( $iPictureId )) {
 
             $this->ClearCache($oPicture->getAlbumId());
-			if($oPicture) {
+			if($oPicture and $iPicCnt < 2) {
 				$this->DeletePictureFromFS($oPicture->getPicPath());
 				$this->DeletePictureFromFS($oPicture->getMiniaturePath());
 				$this->DeletePictureFromFS($oPicture->getBlockPath());

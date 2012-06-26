@@ -7,7 +7,7 @@
 		<lang name="default">Sebastian Prelesniy (sebastian.prelesniy@gmail.com)</lang>
 	</author>
 	<homepage>http://lsmafia.com/prezentaciya-plagina-livestreet-picture-albums.html</homepage>
-	<version>0.3.1</version>
+	<version>0.3</version>
 	<requires>
 		<livestreet>0.5.1</livestreet>
 		<plugins>

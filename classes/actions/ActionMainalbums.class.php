@@ -50,7 +50,7 @@ class PluginPicalbums_ActionMainalbums extends ActionPlugin {
             'picalbums_confirm_delete_album','picalbums_show_friendpage_yet','picalbums_show_friendpage_yet_middle','picalbums_show_friendpage_yet_end','picalbums_show_friendpage_all','picalbums_show_friendpage_all_end',
             'picalbums_hide_status_upload','picalbums_make_note','picalbums_do_make_note','picalbums_click_into_picture_for_make_note',
             'picalbums_ready_delete_category','picalbums_confirm_moderate_album','picalbums_confirm_moderate_image',
-            'picalbums_saving_note','picalbums_editing_note','picalbums_deleting_note'
+            'picalbums_saving_note','picalbums_editing_note','picalbums_deleting_note', 'picalbums_ajaxuploader_button_title'
 		));
 
         $this->Viewer_Assign('sTemplateWebPathPicalbumsPlugin', rtrim(Plugin::GetTemplateWebPath(__CLASS__),'/'));
@@ -310,7 +310,7 @@ class PluginPicalbums_ActionMainalbums extends ActionPlugin {
 			return Router::Action('404'); 
 		}
 
-        if($oAlbum->getAddUserId() != !$this->oUserCurrent->getId())
+        if($oAlbum->getAddUserId() != $this->oUserCurrent->getId())
 		    $this->Viewer_Assign ( 'bIsDisableSort', true );
 
 		$this->Viewer_Assign ( 'oAlbum', $oAlbum );	
@@ -400,14 +400,11 @@ class PluginPicalbums_ActionMainalbums extends ActionPlugin {
 			$iLastPos = $oCurrLastPos['last'];
 		}
 		
-		if($this->oUserCurrent) {
+		if($this->oUserCurrent)
 			$bIsHeart = $this->PluginPicalbums_Heart_isUserVotedByTarget($this->oUserCurrent->getId(), $oPicture->getId());
-			$bNoteActivate = true;
-		}
-		else { 
+		else
 			$bIsHeart = false;
-			$bNoteActivate = false;
-		}
+
 		// Получение информации о сердечках
 		$aUsersHearted = $this->PluginPicalbums_Heart_GetUsersHeartedLimitByTargetId($oPicture->getId(), 6);
 		$iHeartCount = $this->PluginPicalbums_Heart_GetUsersHeartedCountByTargetId($oPicture->getId());
@@ -433,7 +430,6 @@ class PluginPicalbums_ActionMainalbums extends ActionPlugin {
 		$this->Viewer_Assign ( 'sPrevURL', $sPrevURL );
 		$this->Viewer_Assign ( 'iCurrentPos', $iCurrentPos );
 		$this->Viewer_Assign ( 'iLastPos', $iLastPos );
-		$this->Viewer_Assign ( 'bNoteActivate', $bNoteActivate );
 		$this->Viewer_Assign ( 'bIsHeart', $bIsHeart );
 
         $this->Viewer_Assign ( 'aUsersHearted', $aUsersHearted );
@@ -443,14 +439,19 @@ class PluginPicalbums_ActionMainalbums extends ActionPlugin {
 		$this->Viewer_Assign ( 'iNonConfirmMark', $iNonConfirmMark );
 
         $this->Viewer_Assign ( 'aAllPictures', $aAllPictures );
+        $this->Viewer_Assign ( 'sNoteArrayJson', str_replace("'", "\\'", json_encode($this->PluginPicalbums_Picalbums_GetNoteArrayByPictureId($oAlbum->getUserId(),
+                                                                                                         $oPicture->getId(),
+                                                                                                         $this->oUserCurrent)))  );
 
         $aComments = $this->Comment_GetCommentsByTargetId($oPicture->getId(), 'picalbums');
         $aComments = $aComments['comments'];
         $this->Viewer_Assign ( 'aComments', $aComments );
 
-        if($this->oUserCurrent && Config::Get ('plugin.picalbums.functional_copy_picture_ebable')) {
-            $aCurrentUserAlbums = $this->PluginPicalbums_Album_GetAlbumsByUserId($this->oUserCurrent->getId());
-            $this->Viewer_Assign ( 'aCurrentUserAlbums', $aCurrentUserAlbums );
+        if($this->oUserCurrent) {
+            if(Config::Get ('plugin.picalbums.functional_copy_picture_enable')) {
+                $aCurrentUserAlbums = $this->PluginPicalbums_Album_GetAlbumsByUserId($this->oUserCurrent->getId());
+                $this->Viewer_Assign ( 'aCurrentUserAlbums', $aCurrentUserAlbums );
+            }
         }
 		
 		$this->Viewer_AddHtmlTitle(htmlspecialchars($oAlbum->getTitle()));

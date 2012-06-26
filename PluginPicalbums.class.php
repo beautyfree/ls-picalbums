@@ -36,28 +36,29 @@ class PluginPicalbums extends Plugin {
 	}
 	
 	public function Init() {
-		$this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/picalbums.css');
+        $this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/smoothness/jquery-ui-1.8.18.custom.css');
 		$this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/notes/lteIE8.css');
-		$this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/notes/style.css');
+        $this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/notes/style.css');
 		$this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/fileuploader.css');
-        $this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/fileuploader.css');
         $this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/tip/black/black.css');
         $this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/tip/yellow/yellow.css');
         $this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/slides.css');
         $this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/carousel.css');
-		$this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/smoothness/jquery-ui-1.8.17.custom.css');
+        $this->Viewer_AppendStyle(Plugin::GetTemplateWebPath('picalbums').'css/picalbums.css');
 
-        $this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/jquery-ui-1.8.17.custom.min.js');
+        $this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/jquery-ui-1.8.18.custom.min.js');
 		$this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/jquery.carouFredSel-5.5.0-packed.js');
 		$this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/jquery.textchange.js');
         $this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/jquery.poshytip.min.js');
         $this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/jquery.imagesloaded.min.js');
         $this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/slides.js');
 		$this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/pjax.js');
-		$this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/share42.js');
 		$this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/fileuploader.js');
+		$this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/fileuploader-jui.js');
 		$this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/picalbums.js');
 		$this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/picalbums-notes.js');
+        $this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/picalbums-textareas.js');
+        $this->Viewer_AppendScript(Plugin::GetTemplateWebPath('picalbums').'js/picalbums-sort.js');
 		
 		$this->mainalbumsMenu = Plugin::GetTemplateWebPath('picalbums').'menu.mainalbums.tpl';
 	}

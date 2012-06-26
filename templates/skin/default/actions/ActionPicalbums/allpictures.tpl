@@ -3,7 +3,7 @@
 
 {if !$isPjax}
 	{include file='header.tpl' menu='profile' showWhiteBack=false}
-	<h1>
+	<h1 class="albums-page-title">
 	{if $oConfig->GetValue('lang.current') == 'russian'}
 		{if ($oPictureCount == 0) OR ($oPictureCount > 5) AND ($oPictureCount < 20)}
 			{$oPictureCount} фотографий

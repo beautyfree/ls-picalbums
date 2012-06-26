@@ -20,9 +20,7 @@ picmulti.picalbums = (function() {
     }
 
     this.swfHandlerUploadStart = function(e, file) {
-        $('#log li#' + file.id).find('p.status').text(ls.lang.get('picalbums_swf_do_uploading'));
         $('#log li#' + file.id).find('span.progressvalue').text('0%');
-        $('#log li#' + file.id).find('span.cancel').hide();
     }
 
 
@@ -34,8 +32,7 @@ picmulti.picalbums = (function() {
         var listitem='<li id="'+file.id+'" >'+
                 ls.lang.get('picalbums_swf_file') + ': <em>'+file.name+'</em> ('+Math.round(file.size/1024)+' KB) <span class="progressvalue" ></span>'+
                 '<div class="progressbar" ><div class="progress" ></div></div>'+
-                '<p class="status" >'+ls.lang.get('picalbums_swf_pending')+'</p>'+
-                '<span class="cancel" >&nbsp;</span>'+
+                '<button class="cancel" ><i></i>' + ls.lang.get('picalbums_ajaxuploader_cancel') + '</button>'+
                 '</li>';
         
         $('#log').append(listitem);
@@ -63,7 +60,6 @@ picmulti.picalbums = (function() {
         var item = $('#log li#' + file.id);
         item.find('div.progress').css('width', '100%');
         item.find('span.progressvalue').text('100%');
-        item.addClass('success').find('p.status').html(ls.lang.get('picalbums_swf_upload_done'));
 
         picmulti.picalbums.addPhoto($.parseJSON(serverData), '');
     }
@@ -372,6 +368,57 @@ var picalbums = (function() {
                 setTimeout(function() {
                     window.location.href = redirect + result.albumulr + '/';
                 }, 400);
+            }
+        }.bind(this));
+    }
+
+    this.appendAlbumForCopy = function(formObj, redirect) {
+        // Получаем обьект формы
+        formObj = $('#' + formObj);
+
+        var posturl = aRouter[picalbumsConfig["picalbums_router_name"]] + 'ajaxappendalbum/';
+        var postData = { album_title_text: formObj.find('[name="album_title_text"]').val(),
+                         album_description_text: formObj.find('[name="album_description_text"]').val(),
+                         album_need_moder: formObj.find('[name="album_need_moder"]').val(),
+                         album_visibility: formObj.find('[name="album_visibility"]').val(),
+                         album_add_user_target_id: formObj.find('[name="album_add_user_target_id"]').val(),
+                         album_category_id: formObj.find('[name="category_id"]').val(),
+                         album_tags: formObj.find('[name="album_tag_text"]').val(),
+                         show_user_albums: true};
+
+        this.ajax(posturl, postData, function(result) {
+
+            // Если не было получено результат
+            if (!result) {
+                $.notifier.error('Error', 'Please try again later');
+                return;
+            }
+            // Результат получен, но с ошибкой
+            if (result.bStateError) {
+                $.notifier.error(null, result.sMsg);
+            } else {
+                // Выводим пришедшее сообщение
+                if (result.sMsg)
+                    $.notifier.notice(null, result.sMsg);
+
+                $('#copy-picture-container').html(result.sUserAlbumsDialog);
+
+                this.ajax(aRouter[picalbumsConfig["picalbums_router_name"]] + 'ajaxcopypicture/',
+                          { copy_to_album_id : result.iAlbumId, copy_picture_id : $('.showedpicture').attr('id')},
+                    function(result) {
+                    if (!result) {
+                        $.notifier.error('Error', 'Please try again later');
+                        return;
+                    }
+                    if (result.bStateError) {
+                        $.notifier.error(null, result.sMsg);
+                    } else {
+                        if (result.sMsg)
+                            $.notifier.notice(null, result.sMsg);
+
+                        $("#createalbum-dialog").dialog('close');
+                    }
+                }.bind(this));
             }
         }.bind(this));
     }
@@ -729,6 +776,18 @@ var picalbums = (function() {
         });
     }
 
+    this.showDialogForCreateAlbum = function() {
+        $("#createalbum-dialog").dialog({
+            position: ["center","center"],
+            dialogClass: 'createalbum-dialog-class',
+            draggable: true,
+            resizable: true,
+            height: 490,
+            width: 790,
+            hide: 'slide'
+        });
+    }
+
     this.copyPicture = function() {
         var posturl = aRouter[picalbumsConfig["picalbums_router_name"]] + 'ajaxcopypicture/';
         var postData = { copy_to_album_id : $('#current_user_albums').val(), copy_picture_id : $('.showedpicture').attr('id')};
@@ -740,9 +799,9 @@ var picalbums = (function() {
             if (result.bStateError) {
                 $.notifier.error(null, result.sMsg);
             } else {
-                // Выводим пришедшее сообщение
                 if (result.sMsg)
                     $.notifier.notice(null, result.sMsg);
+
                 $("#currentuserpictures-dialog").dialog('close');
             }
         }.bind(this));

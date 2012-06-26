@@ -3,7 +3,7 @@
 
 {if !$isPjax}
 	{include file='header.tpl' menu='mainalbums' showWhiteBack=false}	
-	<h1>{$aLang.picalbums_category} "{$sCategoryTitle}" {if $iPage}/ {$aLang.picalbums_pagetitle} {$iNextPage}{/if}</h1>
+	<h1 class="albums-page-title">{$aLang.picalbums_category} "{$sCategoryTitle}" {if $iPage}/ {$aLang.picalbums_pagetitle} {$iNextPage}{/if}</h1>
 {/if}
 
 {if $aAlbums}

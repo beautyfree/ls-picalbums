@@ -2,7 +2,7 @@
 	{include file='header.tpl' menu='profile' showWhiteBack=false}
 
 	{assign var="iNextPage" value=$iPage+1}
-	<h1>{$aLang.picalbums_friendlisting} {$oUserProfile->getLogin()} {if $iPage}/ {$aLang.picalbums_pagetitle} {$iNextPage}{/if}</h1>
+	<h1 class="albums-page-title">{$aLang.picalbums_friendlisting} {$oUserProfile->getLogin()} {if $iPage}/ {$aLang.picalbums_pagetitle} {$iNextPage}{/if}</h1>
 {/if}
 
 {assign var="iFriendEnd" value=$iPosStart+$iFrCnt}

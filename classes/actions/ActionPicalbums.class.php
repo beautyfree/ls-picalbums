@@ -33,7 +33,7 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
             'picalbums_confirm_delete_album','picalbums_show_friendpage_yet','picalbums_show_friendpage_yet_middle','picalbums_show_friendpage_yet_end','picalbums_show_friendpage_all','picalbums_show_friendpage_all_end',
             'picalbums_hide_status_upload','picalbums_make_note','picalbums_do_make_note','picalbums_click_into_picture_for_make_note',
             'picalbums_ready_delete_category','picalbums_confirm_moderate_album','picalbums_confirm_moderate_image',
-            'picalbums_saving_note','picalbums_editing_note','picalbums_deleting_note'
+            'picalbums_saving_note','picalbums_editing_note','picalbums_deleting_note', 'picalbums_ajaxuploader_button_title'
 		));
 		
 		// Получаем текущего юзера
@@ -650,13 +650,10 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 			$iLastPos = $aCurrLastPos['last'];
 		}
 		
-		if($this->oUserCurrent) {
+		if($this->oUserCurrent)
 			$bIsHeart = $this->PluginPicalbums_Heart_isUserVotedByTarget($this->oUserCurrent->getId(), $oPicture->getId());
-			$bNoteActivate = true;
-		} else { 
+		else
 			$bIsHeart = false;
-			$bNoteActivate = false;
-		}
 
         if(!$oAlbum->GetVisibilityForUser($this->oUserCurrent))
             return Router::Action('404');
@@ -687,7 +684,6 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 		$this->Viewer_Assign ( 'sPrevURL', $sPrevURL );
 		$this->Viewer_Assign ( 'iCurrentPos', $iCurrentPos );
 		$this->Viewer_Assign ( 'iLastPos', $iLastPos );
-		$this->Viewer_Assign ( 'bNoteActivate', $bNoteActivate );
 		$this->Viewer_Assign ( 'bIsHeart', $bIsHeart );
 
 		$this->Viewer_Assign ( 'aUsersHearted', $aUsersHearted );
@@ -697,14 +693,20 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 		$this->Viewer_Assign ( 'iNonConfirmMark', $iNonConfirmMark );
 
         $this->Viewer_Assign ( 'aAllPictures', $aAllPictures );
+
+         $this->Viewer_Assign ( 'sNoteArrayJson', str_replace("'", "\\'", json_encode($this->PluginPicalbums_Picalbums_GetNoteArrayByPictureId($oAlbum->getUserId(),
+                                                                                                         $oPicture->getId(),
+                                                                                                         $this->oUserCurrent)))  );
 		
         $aComments = $this->Comment_GetCommentsByTargetId($oPicture->getId(), 'picalbums');
         $aComments = $aComments['comments'];
         $this->Viewer_Assign ( 'aComments', $aComments );
 
-        if($this->oUserCurrent && Config::Get ('plugin.picalbums.functional_copy_picture_ebable') && $oAlbum->getUserId() != $this->oUserCurrent->getId()) {
-            $aCurrentUserAlbums = $this->PluginPicalbums_Album_GetAlbumsByUserId($this->oUserCurrent->getId());
-            $this->Viewer_Assign ( 'aCurrentUserAlbums', $aCurrentUserAlbums );
+        if($this->oUserCurrent) {
+            if(Config::Get ('plugin.picalbums.functional_copy_picture_enable')) {
+                $aCurrentUserAlbums = $this->PluginPicalbums_Album_GetAlbumsByUserId($this->oUserCurrent->getId());
+                $this->Viewer_Assign ( 'aCurrentUserAlbums', $aCurrentUserAlbums );
+            }
         }
 		
 		$this->Viewer_AddHtmlTitle(htmlspecialchars($this->Lang_Get('picalbums_albumshow_albums').' '.$oUser->getLogin()));
@@ -1065,7 +1067,17 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 			} else {				
 				$this->Stream_Write($iUserId, 'add_album', $iAlbumId);
 			}
-			
+
+            if(getRequest ( 'show_user_albums' )) {
+                $aCurrentUserAlbums = $this->PluginPicalbums_Album_GetAlbumsByUserId($this->oUserCurrent->getId());
+                $oViewer=$this->Viewer_GetLocalViewer();
+                $oViewer->Assign('aCurrentUserAlbums',$aCurrentUserAlbums);
+                $oViewer->Assign('oUserCurrent', $this->oUserCurrent);
+                $aResult=$oViewer->Fetch( rtrim(Plugin::GetTemplatePath(__CLASS__),'/').'/includes/dialog_picture_copy.tpl');
+                $this->Viewer_AssignAjax('sUserAlbumsDialog',$aResult);
+            }
+
+            $this->Viewer_AssignAjax('iAlbumId',$iAlbumId);
 			$this->Viewer_AssignAjax('albumulr',$sUrl);
 		} else {
 			$this->Message_AddErrorSingle($this->Lang_Get ( 'system_error' ), $this->Lang_Get ( 'error' ) );
@@ -2737,6 +2749,8 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
             }
         }
     }
+    
+    
 
 	// Эвент обработки меток
 	protected function AjaxNote() {
@@ -2767,14 +2781,14 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 		}
 
 		if($oAlbum->getUserId() == Config::Get ( 'plugin.picalbums.virtual_main_user_id' )) {
-			$oPictureOwnerUserId = Config::Get ( 'plugin.picalbums.virtual_main_user_id' );
+			$iPictureOwnerUserId = Config::Get ( 'plugin.picalbums.virtual_main_user_id' );
 		} else {
 			$oPictureOwnerUser = $oAlbum->getUserOwner();
 			if (! $oPictureOwnerUser) {
 				$this->Viewer_AssignAjax('result', $this->Lang_Get ( 'system_error' ));
 				return;
 			}
-			$oPictureOwnerUserId = $oPictureOwnerUser->getId();
+			$iPictureOwnerUserId = $oPictureOwnerUser->getId();
 		}
 
 		if(getRequest('add')) {
@@ -2884,7 +2898,7 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 			if($aNotes) {
 				if($aNotes->getPictureId() == $iPictureId) {
 					if(($this->oUserCurrent->getId () != $aNotes->getUserId()) && ($this->oUserCurrent->getId () != $aNotes->getUserMarkId()) &&
-					   ($this->oUserCurrent->getId () != $oPictureOwnerUserId))
+					   ($this->oUserCurrent->getId () != $iPictureOwnerUserId))
 					{
 						$this->Viewer_AssignAjax('result', $this->Lang_Get ( 'picalbums_no_right_to_edit_note' ));
 						return;
@@ -2912,66 +2926,7 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 
 			$this->Viewer_AssignAjax('result', $this->Lang_Get ( 'picalbums_note_not_found' ));
 		} else if(getRequest('get')) {
-			// Администратор и автор картинки видит все пометки
-			if(($this->oUserCurrent->isAdministrator()) ||($oPictureOwnerUserId == $this->oUserCurrent->getId()))
-				$aNotes = $this->PluginPicalbums_Note_GetNotesByPictureId ( $iPictureId );
-			else {
-				$aNotes = $this->PluginPicalbums_Note_GetConfirmedNotesByPictureId ( $iPictureId, $this->oUserCurrent->getId() );
-			}
-
-			$aResult=array();
-			if($aNotes)
-				foreach($aNotes as $sNoteText) {
-					$sNoteTextUser = $this->User_GetUserById($sNoteText->getUserMarkId());
-					$sLink = $sNoteText->getLink();
-					$sAuthorMark = '';
-
-					if($sNoteTextUser) {
-						$sLink = $sNoteTextUser->getUserWebPath();
-						$sAuthorMark = $sNoteTextUser->getLogin();
-					}
-
-					$sNoteTextAuthor = $this->User_GetUserById($sNoteText->getUserId());
-					if($sNoteTextAuthor)
-						$sNoteTextAuthor = $sNoteTextAuthor->getLogin();
-					else
-						$sNoteTextAuthor = '';
-
-					$sAvatar = "";
-					if($sNoteText->getUserMarkId()) {
-						$oUser = $this->User_GetUserById($sNoteText->getUserMarkId());
-						if($oUser)
-							$sAvatar = "<img src='" . $oUser->getProfileAvatarPath(24) . "' /><br/>";
-					}
-					$bCanEdit = 0;
-					$bCanDelete = 0;
-					if(($this->oUserCurrent->getId () == $sNoteText->getUserId()) ||  ($this->oUserCurrent->getId () == $sNoteText->getUserMarkId()) ||
-					   ($this->oUserCurrent->getId () == $oPictureOwnerUserId)) {
-					   $bCanDelete = 1;
-						if(!Config::Get ( 'plugin.picalbums.notes_mark_confirm' ))
-							$bCanEdit = 1;
-						else {
-						   if(($sNoteText->getIsConfirm() == 0) || ($sNoteText->getIsConfirm() == '0'))
-								$bCanEdit = 1;
-						}
-					}
-
-					$aResult[]=array(
-							'ID' => $sNoteText->getId(),
-							'LEFT' => $sNoteText->getLeft(),
-							'WIDTH' => $sNoteText->getWidth(),
-							'TOP' => $sNoteText->getTop(),
-							'HEIGHT' => $sNoteText->getHeight(),
-							'DATE' => $sNoteText->getDateAdd(),
-							'NOTE' => $sAvatar . $sNoteText->getNote(),
-							'LINK' => $sLink,
-							'AUTHOR' => $sNoteTextAuthor,
-							'AUTHORMARK' => $sAuthorMark,
-							'CANEDIT' => $bCanEdit,
-							'CANDELETE' => $bCanDelete,
-							'ISCONFIRM' => $sNoteText->getIsConfirm(),
-					);
-				}
+			$aResult = $this->PluginPicalbums_Picalbums_GetNoteArrayByPictureId($iPictureOwnerUserId, $iPictureId, $this->oUserCurrent->getId (), $this->oUserCurrent->isAdministrator());
 			$this->Viewer_AssignAjax('result', $aResult);
 		}
 		else if(getRequest('delete')) {
@@ -2983,7 +2938,7 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 				if($aNotes->getPictureId() == $iPictureId) {
 					if($this->oUserCurrent->getId () != $aNotes->getUserId()) {
 						if(($this->oUserCurrent->getId () != $aNotes->getUserId()) && ($this->oUserCurrent->getId () != $aNotes->getUserMarkId()) &&
-						   ($this->oUserCurrent->getId () != $oPictureOwnerUserId))
+						   ($this->oUserCurrent->getId () != $iPictureOwnerUserId))
 						{
 							$this->Viewer_AssignAjax('result', 'Вы не можете удалить данную метку');
 							return;
@@ -3068,7 +3023,7 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 	}
 
     public function AjaxCopyPicture() {
-		$this->Viewer_SetResponseAjax('json');
+        $this->Viewer_SetResponseAjax('json');
 
 		// Если пользователь не авторизован
 		if (! $this->User_IsAuthorization ()) {
@@ -3076,10 +3031,10 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 			return false;
 		}
 
-		if (! ($oAlbum = $this->PluginPicalbums_Album_GetAlbumById ( getRequest ( 'copy_to_album_id' ) ))) {
-			$this->Message_AddErrorSingle ( $this->Lang_Get ( 'system_error' ), $this->Lang_Get ( 'error' ) );
-			return false;
-		}
+        if (! ($oAlbum = $this->PluginPicalbums_Album_GetAlbumById ( getRequest ( 'copy_to_album_id' ) ))) {
+            $this->Message_AddErrorSingle ( $this->Lang_Get ( 'system_error' ), $this->Lang_Get ( 'error' ) );
+            return false;
+        }
 
 		$iCurrentUserId = $this->oUserCurrent->getId ();
 		if($iCurrentUserId != $oAlbum->getUserId()) {
@@ -3096,7 +3051,12 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 			return false;
         }
 
-		// Формируем картинку
+        if($this->PluginPicalbums_Picture_GetPicturesCountByPicPathAndAlbumId($oPicture->getPicPath(), $oAlbum->getId()) > 0) {
+            $this->Message_AddErrorSingle ( $this->Lang_Get ( 'picalbums_copy_dublicate' ), $this->Lang_Get ( 'error' ) );
+			return false;
+        }
+
+        // Формируем картинку
 		$oPictureNew = Engine::GetEntity ( 'PluginPicalbums_Picture' );
 		$oPictureNew->setAlbumId ( $oAlbum->getId() );
 		$oPictureNew->setDescription ( $oPicture->getDescription() );
@@ -3118,7 +3078,7 @@ class PluginPicalbums_ActionPicalbums extends ActionPlugin {
 			$this->Message_AddErrorSingle($this->Lang_Get ( 'system_error' ), $this->Lang_Get ( 'error' ) );
 			return false;
 		}
-	}
-	
+    }
+
 }
 ?>

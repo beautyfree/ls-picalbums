@@ -125,7 +125,7 @@ class PluginPicalbums_ModuleAlbum extends Module {
 		$tag = "album_private_all_user_{$iVirtualUserId}";
 		if (false === ($data = $this->Cache_Get ( $tag ))) {
 			$data = $this->oMapper->GetPrivateAlbumsByAllUsers ( $iVirtualUserId );
-			$this->Cache_Set ( $data, $tag, array ("album_update_{$iVirtualUserId}" ), 60 * 60 * 24 );
+			$this->Cache_Set ( $data, $tag, array ("album_main" ), 60 * 60 * 24 );
 		}
 		return $data;
 	}	
@@ -250,8 +250,8 @@ class PluginPicalbums_ModuleAlbum extends Module {
 				
 			$aPictures = $this->PluginPicalbums_Picture_GetPictureByAlbumId($iAlbumId);
 			if($aPictures) {
-				foreach($aPictures as $picture) {
-					$this->PluginPicalbums_Picture_DeletePicture($picture->getId());
+				foreach($aPictures as $oPicture) {
+					$this->PluginPicalbums_Picture_DeletePicture($oPicture->getId());
 				}
 			}
 

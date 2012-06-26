@@ -35,6 +35,7 @@
 }
 .jquery-notes-container .notes {
     position:relative;
+    height: auto;
 }
 .jquery-notes-container .notes img {
     position:relative;
@@ -261,3 +262,5 @@
 .jquery-notes-container .controller a.link {
     background-image:url(../../images/notes/link.png);
 }
+
+

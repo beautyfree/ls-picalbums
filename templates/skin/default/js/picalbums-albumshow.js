@@ -9,19 +9,34 @@ function setAjaxUploader(najax_uploader) {
 }
 
 function createUploader() {
-	setAjaxUploader(new qq.FileUploader({
+	setAjaxUploader(new qq.jQueryUIUploader({
 		element: document.getElementById('file-uploader'),
 		action: aRouter[picalbumsConfig["picalbums_router_name"]]+"ajaxuploadserviceajax",
 		params: {'security_ls_key': LIVESTREET_SECURITY_KEY},
 		allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
 		sizeLimit: picalbumsConfig["ajax_max_size_upload_file"],
 		maxConnections: picalbumsConfig["ajax_upload_max_connections"],
+
+        template: '<div class="jq-uploader">' +
+						'<div class="jq-upload-button"><i></i>' + ls.lang.get('picalbums_ajaxuploader_button_title') + '</div>' +
+						'<ul class="jq-upload-list"></ul>' +
+						'<div class="jq-upload-dialog"></div>' +
+					'</div>',
+
+        fileTemplate: '<li>' +
+							ls.lang.get('picalbums_swf_file') + ': <span class="jq-upload-file"></span>' +
+							'(<span class="jq-upload-size"></span>)' +
+							'<br/><div class="jq-upload-progress"></div>' +
+							'<button class="jq-upload-cancel" ><i></i><span>' + ls.lang.get('picalbums_ajaxuploader_cancel') + '</span></button>' +
+							'<span class="jq-upload-failed-text">' + ls.lang.get('picalbums_ajaxuploader_failed') + '</span>' +
+						'</li>',
+
 		onComplete: function(id, fileName, responseJSON) {
 								picmulti.picalbums.addPhoto(responseJSON, '');
 								if(getAjaxUploader() && getAjaxUploader().getInProgress() == 0) {
 									$('.album-loader').css('display', 'none');
 									if(picalbumsConfig["ajax_upload_progress_disable"] == false)
-										setTimeout(function() {$('.qq-upload-list').fadeOut("slow", function() { $(this).empty(); $('.qq-upload-list').css('display', 'block'); });}, 500);
+										setTimeout(function() {$('.jq-upload-list').fadeOut("slow", function() { $(this).empty(); $('.jq-upload-list').css('display', 'block'); });}, 500);
 								}
 							},
 		onSubmit: function(id, fileName){

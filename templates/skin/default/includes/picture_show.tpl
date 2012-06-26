@@ -4,22 +4,20 @@
 			{if $sNextURL}
 				{if $oConfig->GetValue('plugin.picalbums.pjax_for_picture_listing') == false}
 					<a id="picture_link_navigation" href="{$sAlbumPath}{$oAlbum->getURL()}/{$sNextURL}/">
+                {else}
+                    <a id="picture_link_navigation" class="navigation_next_picture_link_pjax" href="{$sAlbumPath}{$oAlbum->getURL()}/{$sNextURL}/">
+                {/if}
+            {/if}
 						<div class="samples-box clearfix">
-							<img id="loaded_image" alt="{$oPicture->getDescription()}" src="{$oPicture->getPicPath()}" class="jquery-note_picture" />			
+                            <div id="jquery-notes_1" class="jquery-notes-container clearfix" style="height: auto;">
+							    <div class="notes clearfix">
+                                    <img id="loaded_image" alt="{$oPicture->getDescription()}" src="{$oPicture->getPicPath()}" class="jquery-note_picture" />
+                                </div>
+                            </div>
 						</div>
+            {if $sNextURL}
 					</a>
-				{else}
-					<a id="picture_link_navigation" class="navigation_next_picture_link_pjax" href="{$sAlbumPath}{$oAlbum->getURL()}/{$sNextURL}/">
-						<div class="samples-box clearfix">
-							<img id="loaded_image" alt="{$oPicture->getDescription()}" src="{$oPicture->getPicPath()}" class="jquery-note_picture" />			
-						</div>
-					</a>
-				{/if}
-			{else}
-				<div class="samples-box clearfix">
-					<img id="loaded_image" alt="{$oPicture->getDescription()}" src="{$oPicture->getPicPath()}" class="jquery-note_picture" />			
-				</div>
-			{/if}
+            {/if}
 		</div>
 		
 		<div id="nonmark_confirm">
@@ -130,15 +128,39 @@
 					<a href="{$oUserAddOwner->getUserWebPath()}">{$oUserAddOwner->getLogin()}</a>
 				</div>
 			{/if}
-				
-			<div class="makenote"></div>
-			<div class="info">{$aLang.picalbums_albumshow_album_info_share}:</div>
-			<div id="sharediv"></div>
 
-            {if $bCopyFunctionalEnable}
-                <div class="link">
-                    <a href="" onclick="picalbums.showDialogForCopyPicture(); return false;"">{$aLang.picalbums_do_copy_small}</a>
+            {if $oUserCurrent}
+                <div class="makenote">
+                    <a class="add-note-link" title="add" href="javascript:void(0);">{$aLang.picalbums_make_note}</a>
+                    <a class="reload-note-link" title="add" href="javascript:void(0);" style="display: none;" title="add" >!</a>
                 </div>
+            {/if}
+			<div class="info">{$aLang.picalbums_albumshow_album_info_share}:</div>
+			<div id="sharediv">
+                <div id="share42">
+                    {assign var="sLinkURL" value="`$sAlbumPath``$oAlbum->getURL()`/`$oPicture->getURL()`/"}
+                    <a target="_blank" title="Поделиться в Facebook" href="http://www.facebook.com/sharer.php?u={$sLinkURL}&t={$oPicture->getDescription()|escape:'html'}" style="background:url({$sTemplateWebPathPicalbumsPlugin}/images/icons.png) -0px 0" rel="nofollow"></a>
+                    <a target="_blank" title="Опубликовать в LiveJournal" href="http://www.livejournal.com/update.bml?event={$sLinkURL}&subject={$oPicture->getDescription()|escape:'html'}" style="background:url({$sTemplateWebPathPicalbumsPlugin}/images/icons.png) -16px 0" rel="nofollow"></a>
+                    <a target="_blank" title="Поделиться в Моем Мире@Mail.Ru" href="http://connect.mail.ru/share?url={$sLinkURL}&title={$oPicture->getDescription()|escape:'html'}" style="background:url({$sTemplateWebPathPicalbumsPlugin}/images/icons.png) -32px 0" rel="nofollow"></a>
+                    <a target="_blank" title="Добавить в Одноклассники" href="http://www.odnoklassniki.ru/dk?st.cmd=addShare&st._surl={$sLinkURL}&title={$oPicture->getDescription()|escape:'html'}" style="background:url({$sTemplateWebPathPicalbumsPlugin}/images/icons.png) -48px 0" rel="nofollow"></a>
+                    <a target="_blank" title="Добавить в Twitter" href="http://twitter.com/share?text={$oPicture->getDescription()|escape:'html'}&url={$sLinkURL}" style="background:url({$sTemplateWebPathPicalbumsPlugin}/images/icons.png) -64px 0" rel="nofollow"></a>
+                    <a target="_blank" title="Поделиться В Контакте" onclick="window.open('http://vkontakte.ru/share.php?url={$sLinkURL}', '_blank', 'scrollbars=0, resizable=1, menubar=0, left=200, top=200, width=554, height=421, toolbar=0, status=0');return false" href="#" style="background:url({$sTemplateWebPathPicalbumsPlugin}/images/icons.png) -80px 0" rel="nofollow"></a>
+                    <a target="_blank" title="Отправить на e-mail другу" href="http://www.feedburner.com/fb/a/emailFlare?loc=ru_RU&itemTitle={$oPicture->getDescription()|escape:'html'}&uri={$sLinkURL}" style="background:url({$sTemplateWebPathPicalbumsPlugin}/images/icons.png) -96px 0" rel="nofollow"></a>
+                </div>
+			</div>
+
+            {if $oConfig->GetValue('plugin.picalbums.functional_copy_picture_enable')}
+                {if !$oUserCurrent}
+                    <a href="{router page='login'}" id="picalbums_login_form_show">{$aLang.picalbums_do_copy_small}</a>
+                {else}
+                    <div id="copy-picture-container">
+                        {if $aCurrentUserAlbums}
+                            {include file="$sIncludesTplPath/dialog_picture_copy.tpl"}
+                        {else}
+                            {include file="$sIncludesTplPath/dialog_create_album_copy.tpl"}
+                        {/if}
+                    </div>
+                {/if}
             {/if}
 		</div>
 	</div>

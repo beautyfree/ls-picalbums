@@ -29,27 +29,11 @@ $.fn.jQueryNotes = function (settings) {
     var _initPlugin = function (matchedObj) {
             pointer = 1;
             ID = {};
-            _setContainer(matchedObj, pointer);
             _getProperties(pointer);
             _createHtml(pointer);
             _getNotes(pointer)
         };
-    var _setContainer = function (matchedObj, pointer) {
-            var cssClass = $(matchedObj).attr("class");
-            var style = $(matchedObj).attr("style");
-            $(matchedObj).wrap('<div id="jquery-notes_' + pointer + '" class="jquery-notes-container clearfix" />').removeAttr("class", "style").css({
-                padding: 0,
-                margin: 0,
-                border: "none",
-                outline: "none",
-                background: "none"
-            });
-            $("#jquery-notes_" + pointer).addClass(cssClass).addClass(settings.helper).attr({
-                style: style
-            })
-        };
     var _createHtml = function (pointer) {
-            $("#jquery-notes_" + pointer + " img").wrap('<div class="notes clearfix" />');
             $("#jquery-notes_" + pointer + " .notes").append('<div class="layer"></div><div class="loading"><div class="message"></div></div>');
             $("#jquery-notes_" + pointer + " .notes .loading").css({
                 marginTop: ID.height / 2 - 13 + "px"
@@ -59,7 +43,7 @@ $.fn.jQueryNotes = function (settings) {
             }).mouseup(function (event) {
                 _setNote(pointer, event)
             });
-            $(".makenote").empty().append('<a href="javascript:void(0);" class="add-note-link" title="add" >' + ls.lang.get('picalbums_make_note') + "</a>");
+            $(".makenote").html('<a href="javascript:void(0);" class="add-note-link" title="add" >' + ls.lang.get('picalbums_make_note') + "</a>");
             $(".makenote").append('<a href="javascript:void(0);" class="reload-note-link" style="display: none;" title="add" >!</a>');
             $(".add-note-link").click(function () {
                 _startAdd(pointer)
@@ -87,30 +71,44 @@ $.fn.jQueryNotes = function (settings) {
             }, 1E3)
         };
     var _getNotes = function (pointer) {
-            if (settings.loadNotes) $.ajax({
-                url: settings.operator,
-                global: false,
-                timeout: 15E3,
-                dataType: "json",
-                type: "POST",
-                data: "get=true&image=" + ID.image + "&security_ls_key=" + LIVESTREET_SECURITY_KEY + "&pictureid=" + settings.pictureid,
-                success: function (data) {
-                    if (data.result) {
-                        firstLoad = false;
-                        $.each(data.result, function () {
-                            _printNote(pointer, this)
-                        });
-                        var counter = _countNotes(pointer);
-                        $("#jquery-notes_" + pointer + " .controller .counter").attr("title", function () {
-                            return counter == 1 ? counter + " note" : counter + " notes"
-                        });
-                        counter >= settings.maxNotes && settings.maxNotes != null ? $(".add-note-link").hide() : $(".add-note-link").show();
-                        settings.hideNotes ? _hideNotes(pointer) : ""
+            if(settings.picalbums_note_array_json) {
+                $.each(JSON.parse(settings.picalbums_note_array_json), function () {
+                        _printNote(pointer, this)
+                    });
+                    var counter = _countNotes(pointer);
+                    $("#jquery-notes_" + pointer + " .controller .counter").attr("title", function () {
+                        return counter == 1 ? counter + " note" : counter + " notes"
+                    });
+                    counter >= settings.maxNotes && settings.maxNotes != null ? $(".add-note-link").hide() : $(".add-note-link").show();
+                    settings.hideNotes ? _hideNotes(pointer) : ""
+
+                _stopLoading(pointer)
+                settings.picalbums_note_array_json = null;
+            } else {
+                if (settings.loadNotes) $.ajax({
+                    url: settings.operator,
+                    global: false,
+                    timeout: 15E3,
+                    dataType: "json",
+                    type: "POST",
+                    data: "get=true&image=" + ID.image + "&security_ls_key=" + LIVESTREET_SECURITY_KEY + "&pictureid=" + settings.pictureid,
+                    success: function (data) {
+                        if (data.result) {
+                            $.each(data.result, function () {
+                                _printNote(pointer, this)
+                            });
+                            var counter = _countNotes(pointer);
+                            $("#jquery-notes_" + pointer + " .controller .counter").attr("title", function () {
+                                return counter == 1 ? counter + " note" : counter + " notes"
+                            });
+                            counter >= settings.maxNotes && settings.maxNotes != null ? $(".add-note-link").hide() : $(".add-note-link").show();
+                            settings.hideNotes ? _hideNotes(pointer) : ""
+                        }
+                        _stopLoading(pointer)
                     }
-                    _stopLoading(pointer)
-                }
-            });
-            else _stopLoading(pointer)
+                });
+                else _stopLoading(pointer)
+            }
         };
     var _printNote = function (pointer, note) {
             var html = '<div id="n_' + pointer + "-" + note.ID + '" class="note"><div id="n_border_' + pointer + "-" + note.ID + '" class="border"><div class="bg">';
@@ -118,7 +116,7 @@ $.fn.jQueryNotes = function (settings) {
             html += '</div></div></div><div style="text-align: left" id="t_' + pointer + "-" + note.ID + '" class="text"><span class="txt">';
             html += note.NOTE != "" ? note.NOTE : note.LINK;
             html += "</span>";
-            if (note.NOTE) html += note.AUTHOR != "" && settings.allowAuthor ? '<span style="text-align: right" class="author" usermark="' + note.AUTHORMARK + '" isconfirm="' + note.ISCONFIRM + '" canedit="' + note.CANEDIT + '" ' + '" candelete="' + note.CANDELETE + '" > - ' + note.AUTHOR + "</span>" : "";
+            if (note.NOTE) html += note.AUTHOR != "" && settings.allowAuthor ? '<span style="text-align: right" class="author" usermark="' + note.AUTHORMARK + '" isconfirm="' + note.ISCONFIRM + '" canedit="' + note.CANEDIT + '" candelete="' + note.CANDELETE + '" > - ' + note.AUTHOR + "</span>" : "";
             else html += note.AUTHOR != "" && settings.allowAuthor ? '<span style="text-align: right" class="author" usermark="' + note.AUTHORMARK + '" isconfirm="' + note.ISCONFIRM + '" canedit="' + note.CANEDIT + '" ' + '" candelete="' + note.CANDELETE + '" >' + note.AUTHOR + "</span>" : "";
             html += "</div>";
             $("#jquery-notes_" + pointer + " .notes").append(html);

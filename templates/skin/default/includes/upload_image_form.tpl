@@ -41,12 +41,12 @@
 		<form id="picalbums-upload-form" method="POST" enctype="multipart/form-data" onsubmit="return false;">
 			<p id="topic-photo-upload-input" class="topic-photo-upload-input">
 				<div>
-					<label for="title">{$aLang.picalbums_albumshow_albums_title}:</label><br/>
-					<input id="picture_img_title" type="text" value="" name="title">
+					<label>{$aLang.picalbums_albumshow_albums_title}:</label><br/>
+					<input id="picture_img_title" type="text" class="input-wide" value="" name="title">
 				</div>
 				
 				<div>
-					<label for="">{$aLang.picalbums_albumshow_albums_upload_file}:</label><br />
+					<label>{$aLang.picalbums_albumshow_albums_upload_file}:</label><br />
 					<input type="file" id="picalbums-upload-file" name="Filedata" /><br><br>
 				</div>
 				

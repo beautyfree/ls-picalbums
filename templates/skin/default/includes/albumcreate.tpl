@@ -1,8 +1,5 @@
-<script type="text/javascript" src="{$sTemplateWebPathPicalbumsPlugin}/js/picalbums-textareas.js"></script>
-
-<h1>{$aLang.picalbums_album_add}</h1>
-
 <div class="album_form_add">
+    <h1>{$aLang.picalbums_album_add}</h1>
 	<form action="" method="POST" id="form_album_append" onsubmit="return false;" enctype="multipart/form-data">		
 		<p>
 			<label id="album_title_label">{$aLang.picalbums_album_add_title}:</label><br/>
@@ -61,7 +58,7 @@
 				name="submit_album" 
 				id="submit_album" 
 				value="{$aLang.picalbums_album_add_submit}" 
-				onclick="picalbums.appendAlbum('form_album_append', '{$sAlbumPath}'); return false;" />	
+				onclick="picalbums.{if !$sAppendFunction}appendAlbum{else}{$sAppendFunction}{/if}('form_album_append', '{$sAlbumPath}'); return false;" />
 				
 		<input type="hidden" name="album_add_user_target_id" value="{$iUserId}">
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}">

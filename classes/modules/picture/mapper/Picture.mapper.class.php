@@ -379,6 +379,28 @@ class PluginPicalbums_ModulePicture_MapperPicture extends Mapper {
 		}
 		return false;
 	}
+
+     public function GetPicturesCountByPicPath($sPath) {
+		$sql = 	" SELECT COUNT(p.picture_id) as picturecnt  " .
+				" FROM " . Config::Get ( 'plugin.picalbums.table.picture' ) . " p " .
+				" WHERE p.picpath = ? ";
+
+		if ($aRow = $this->oDb->selectRow ( $sql, $sPath )) {
+			return $aRow['picturecnt'];
+		}
+		return false;
+	}
+
+    public function GetPicturesCountByPicPathAndAlbumId($sPath, $iAlbumId) {
+		$sql = 	" SELECT COUNT(p.picture_id) as picturecnt  " .
+				" FROM " . Config::Get ( 'plugin.picalbums.table.picture' ) . " p " .
+				" WHERE p.picpath = ? AND p.album_id = ?d ";
+
+		if ($aRow = $this->oDb->selectRow ( $sql, $sPath, $iAlbumId )) {
+			return $aRow['picturecnt'];
+		}
+		return false;
+	}
 	
 	// Добавление картинки
 	public function AddPicture($oPicture) {

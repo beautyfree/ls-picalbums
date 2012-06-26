@@ -3,7 +3,7 @@
 
 {if !$isPjax}
 	{include file='header.tpl' menu='profile' showWhiteBack=false}	
-	<h1>{$aLang.picalbums_albumshow_albums} {$oUserProfile->getLogin()} {if $iPage}/ {$aLang.picalbums_pagetitle} {$iNextPage}{/if}</h1>
+	<h1 class="albums-page-title">{$aLang.picalbums_albumshow_albums} {$oUserProfile->getLogin()} {if $iPage}/ {$aLang.picalbums_pagetitle} {$iNextPage}{/if}</h1>
 {/if}
 
 {if $aAlbums}
